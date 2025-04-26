@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h> 
 
 struct Connection;
 
@@ -19,14 +20,27 @@ Node *create_node(int val) {
     return new_node;
 }
 
+bool check_for_existence_of_connection(Node *ptr_to_add, Node *add_to) {
+    for(int i=0; i<add_to->connection_count; i++) {
+        if(add_to->connections[i] == ptr_to_add) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void create_one_way_connection(Node *first_node, Node *second_node) {
     if(first_node->connection_count >= first_node->connection_capacity) {
         first_node->connection_capacity*=2;
         first_node->connections = realloc(first_node->connections, sizeof(Node *) * first_node->connection_capacity);
     }
 
-    first_node->connections[first_node->connection_count] = second_node;
-    first_node->connection_count+=1;
+    if(check_for_existence_of_connection(second_node, first_node) == false) {
+        first_node->connections[first_node->connection_count] = second_node;
+        first_node->connection_count+=1;   
+    } else {
+        printf("Connection already exist");
+    }
 }
 
 int main(void) {
