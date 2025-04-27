@@ -39,14 +39,25 @@ void create_one_way_connection(Node *first_node, Node *second_node) {
         first_node->connections[first_node->connection_count] = second_node;
         first_node->connection_count+=1;   
     } else {
-        printf("Connection already exist");
+        printf("Connection already exist\n");
     }
+}
+
+void create_two_way_connection(Node *first_node, Node *second_node) {
+    create_one_way_connection(first_node, second_node);
+    create_one_way_connection(second_node, first_node);
 }
 
 int main(void) {
     Node *first_node = create_node(120);
     Node *second_node = create_node(130);
+    Node *third_node = create_node(1230);
+    Node *fourth_node = create_node(198049);
     create_one_way_connection(first_node, second_node);
+    create_two_way_connection(first_node, third_node);
+    create_one_way_connection(third_node, fourth_node);
 
-    printf("%d", first_node->connections[0]->value);
+    printf("%d\n", first_node->connections[0]->value);
+    printf("%d\n", third_node->connections[0]->value);
+    printf("%d\n", first_node->connections[1]->value);
 }
